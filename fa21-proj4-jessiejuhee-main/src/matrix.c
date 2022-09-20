@@ -253,7 +253,26 @@ int abs_matrix(matrix *result, matrix *mat) {
  * Note that the matrix is in row-major order.
  */
 int neg_matrix(matrix *result, matrix *mat) {
-    // Task 1.5 TODO
+    int rows = result->rows;
+    int cols = result->cols;
+
+    #pragma omp parallel for
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols / 4 * 4; j+= 4) {
+            int offset = i * cols + j;
+            __m256d a = _mm256_loadu_pd(mat->data + offset);
+            _mm256_storeu_pd(result->data + offset, _mm256_xor_pd(a, _mm256_set1_pd(-0.0)));
+        }
+    }
+
+    #pragma omp parallel for 
+    for (int i = 0; i < rows; i++) {
+        for (int j = cols / 4 * 4; j < cols; j++) {
+            int offset = i * cols + j;
+            result->data[offset] = -mat->data[offset];
+        }
+    }
+    return 0;
 }
 
 /*
@@ -294,7 +313,27 @@ int add_matrix(matrix *result, matrix *mat1, matrix *mat2) {
  * Note that the matrix is in row-major order.
  */
 int sub_matrix(matrix *result, matrix *mat1, matrix *mat2) {
-    // Task 1.5 TODO
+    int rows = result->rows;
+    int cols = result->cols;
+	
+    #pragma omp parallel for
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols / 4 * 4; j += 4) {
+            int offset = i * cols + j;
+            __m256d first = _mm256_loadu_pd(mat1->data + offset);
+            __m256d second = _mm256_loadu_pd(mat2->data + offset);
+            _mm256_storeu_pd(result->data + offset, _mm256_sub_pd(first, second));
+        }
+    }
+	
+    #pragma omp parallel for
+    for (int i = 0; i<rows; i++) {
+        for (int j = cols / 4 * 4; j < cols; j++) {
+            int offset = i * cols + j;
+            result->data[offset] = mat1->data[offset] - mat2->data[offset];
+        }
+    }
+    return 0;
 }
 
 /*
