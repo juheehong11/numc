@@ -76,8 +76,6 @@ void set(matrix *mat, int row, int col, double val) {
  * Return 0 upon success.
  */
 int allocate_matrix(matrix **mat, int rows, int cols) {
-    // Task 1.2 TODO
-    // HINTS: Follow these steps.
     // 1. Check if the dimensions are valid. Return -1 if either dimension is not positive.
     // 2. Allocate space for the new matrix struct. Return -2 if allocating memory failed.
     // 3. Allocate space for the matrix data, initializing all entries to be 0. Return -2 if allocating memory failed.
@@ -116,8 +114,6 @@ int allocate_matrix(matrix **mat, int rows, int cols) {
  * matrix has no other references (including itself).
  */
 void deallocate_matrix(matrix *mat) {
-    // Task 1.3 TODO
-    // HINTS: Follow these steps.
     // 1. If the matrix pointer `mat` is NULL, return.
     // 2. If `mat` has no parent: decrement its `ref_cnt` field by 1. If the `ref_cnt` field becomes 0, then free `mat` and its `data` field.
     // 3. Otherwise, recursively call `deallocate_matrix` on `mat`'s parent, then free `mat`.
@@ -152,8 +148,6 @@ void deallocate_matrix(matrix *mat) {
  * there is no need to allocate space for matrix data.
  */
 int allocate_matrix_ref(matrix **mat, matrix *from, int offset, int rows, int cols) {
-    // Task 1.4 TODO
-    // HINTS: Follow these steps.
     // 1. Check if the dimensions are valid. Return -1 if either dimension is not positive.
     // 2. Allocate space for the new matrix struct. Return -2 if allocating memory failed.
     // 3. Set the `data` field of the new struct to be the `data` field of the `from` struct plus `offset`.
@@ -247,7 +241,6 @@ int abs_matrix(matrix *result, matrix *mat) {
 }
 
 /*
- * (OPTIONAL)
  * Store the result of element-wise negating mat's entries to `result`.
  * Return 0 upon success.
  * Note that the matrix is in row-major order.
@@ -306,7 +299,6 @@ int add_matrix(matrix *result, matrix *mat1, matrix *mat2) {
 }
 
 /*
- * (OPTIONAL)
  * Store the result of subtracting mat2 from mat1 to `result`.
  * Return 0 upon success.
  * You may assume `mat1` and `mat2` have the same dimensions.
